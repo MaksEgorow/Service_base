@@ -1,0 +1,68 @@
+html, body {
+    font-family: Arial, Tahoma;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-size: 20px;
+    color: #444;
+}
+
+h1 {
+    font-size: 20px;
+    margin: 21px 0 21px 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ccc;
+}
+
+ul.mainmenu {
+    list-style: none;
+    background: lightslategray;
+    height: 61px;
+    margin: 0;
+    padding: 0;
+    color: brown;
+    font-size: 21px;
+    overflow: hidden;
+}
+
+ul.mainmenu li {
+    float: left;
+    margin: 18px 41px 0 51px;
+}
+
+ul.mainmenu li.last {
+    float: right
+}
+
+ul.mainmenu li a {
+    color: brown;
+    text-decoration: none;
+}
+
+ul.mainmenu li a:hover {
+    color: gold;
+}
+
+ .button {
+      background-color: lightslategrey;
+      border: none;
+      color: white;
+      padding: 20px 34px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 4px 2px;
+      cursor: pointer;
+      }
+
+/* .form-create label {*/
+/*         display: compact;*/
+/*         min-width: 80px;*/
+/*}*/
+
+/*.form-create p {margin: 10px 0 10px 25px;}*/
+/*.form-create input[type=submit], textarea {*/
+/*         font-size: 16px;*/
+/*}*/

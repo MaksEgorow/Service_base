@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<p>Данные организации:</p>
+<form action="/create_customer" method="POST" class="form-create">
+    <p><label>Организация: </label> <input type="text" name="organization" value="" required/>
+    <p><label>Адрес: </label> <input type="text" name="adress" value="" required/>
+    <p><label>Email: </label> <input type="text" name="email" value="" required/>
+    <p><label>Телефон: </label> <input type="text" name="phone" value="" required/>
+    <p><label>Договор: </label> <input type="text" name="contract" value="" required/>
+    <p><label>Статистика: </label> <input type="integer" name="statistics_idstatistics" value="" required/>
+    <p>Контактное лицо:</p>
+    <p><label>Имя: </label> <input type="text" name="name_cust" value="" required/>
+    <p><label>Фамилия: </label> <input type="text" name="lastname" value="" required/>
+    <p><label>Отчество: </label> <input type="text" name="surname" value="" required/>
+    <p><label>Должность: </label> <input type="text" name="phone_cust" value="" required/>
+    <p><label>Телефон: </label> <input type="text" name="position" value="" required/>
+    <p><label>Комментарий:</label>
+    <p><textarea name="message" rows=10 cols=40></textarea>
+    <p><input type="submit" value="Отправить"/>
+</form>
+{% endblock %}

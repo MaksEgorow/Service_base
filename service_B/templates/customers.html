@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+{{ super() }}
+<p>Здесь представлена информация по заказчикам</p>
+<p>Заказчики которые уже есть в базе отображатся списком ссылок на таблицу информации о заказчике и его оборудованиии</p>
+<form>
+      <button type="submit" formaction="/create_customer", class="button">Создать</button>
+</form>
+{% endblock %}

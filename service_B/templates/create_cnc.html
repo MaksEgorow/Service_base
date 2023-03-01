@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<form action="/create_cnc" method="POST" enctype="multipart/form-data" class="form-create">
+    <p><label for="type">Тип оборудования:</label>
+        <select id="type" type="text" name="typ_eq">
+        <option value="токарный">токарный</option>
+        <option value="фрезерный">фрезерный</option>
+        <option value="карусельный">карусельный</option>
+        <option value="горизонтально-расточной">горизонтально-расточной</option>
+        <option value="пятиосевой">пятиосевой</option>
+        <option value="электроэрозионный">электроэрозионный</option>
+        <option value="робот">робот</option>
+    </select></p>
+    <p><label>Модель: </label> <input type="text" name="model" value="" required/>
+    <p><label>S/N: </label> <input type="text" name="ser_number" value="" required/>
+    <p><label>CNC: </label> <input type="text" name="cnc_typ" value="" required/>
+    <p><label>PLC: </label><input type="file" name="file" />
+    <input type = "submit" value="Upload"></p>
+    <p><label>Check_list: </label><input type="file" name="file1" />
+    <input type = "submit" value="Upload"></p>
+    <p><label>Documentation: </label><input type="file" name="file2" />
+    <input type = "submit" value="Upload"></p>
+    <p><label>Комментарий:</label>
+    <p><textarea name="message" rows=10 cols=40></textarea>
+    <p><input type="submit" value="Отправить"/>
+</form>
+{% endblock %}

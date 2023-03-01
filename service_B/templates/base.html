@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet"/>
+    {% block title -%}
+    {% if title %}
+    <title>TSM_seiki - {{title}}</title>
+    {% else %}
+    <title>TSM_seiki</title>
+    {% endif %}
+    {% endblock %}
+</head>
+<body>
+{% block content -%}
+{%- block mainmenu -%}
+<ul class="mainmenu">
+    {% for m in menu -%}
+    <li><a href="{{m.url}}">{{m.name}}</a></li>
+    {% endfor -%}
+</ul>
+{% endblock mainmenu -%}
+{% if title -%}
+<h1>{{title}}</h1>
+{% else -%}
+<h1>TSM_seiki</h1>
+{% endif -%}
+{% endblock -%}
+</body>
+</html>
