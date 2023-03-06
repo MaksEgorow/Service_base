@@ -2,8 +2,9 @@
 
 {% block content %}
 {{ super() }}
-<p>Данные организации:</p>
+
 <form action="/create_customer" method="POST" class="form-create">
+    <p>Данные организации:</p>
     <p><label>Организация: </label> <input type="text" name="organization" value="" required/>
     <p><label>Адрес: </label> <input type="text" name="adress" value="" required/>
     <p><label>Email: </label> <input type="text" name="email" value="" required/>

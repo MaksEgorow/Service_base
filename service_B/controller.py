@@ -3,18 +3,23 @@ from flask_mysqldb import MySQL
 from config import host, user, password, db_name
 import os
 from werkzeug.utils import secure_filename
+from flask_socketio import SocketIO, send, emit
 
 # Настройка загрузки файлов 1
-UPLOAD_FOLDER = 'C:/Users/jisca/Desktop/diplom/upload'
+UPLOAD_FOLDER = 'C:/Users/jisca/Desktop/Max/plc'
+# UPLOAD_FOLDER1 = 'C:/Users/jisca/Desktop/Max/check_list'
+# UPLOAD_FOLDER2 = 'C:/Users/jisca/Desktop/Max/documentation'
 ALLOWED_EXTENSIONS = {'txt', 'pdf'}
 
 app = Flask(__name__)
+# активируем socketIO
+socketio = SocketIO(app)
+
 # Устанавливаем SECREt KEY
 app.config['SECRET_KEY'] = '>gfhf89dx,v06kdgfh78@#5'
 
 # Настройка загрузки файлов 2
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 # Подключаемся к базе данных
 app.config['MYSQL_PORT'] = 3307
@@ -44,7 +49,7 @@ def index():
     return render_template('index.html', menu=menu)
 
 
-@app.route("/list-request")
+@app.route("/list-request", methods=['GET', 'POST'])
 def list_request():
     return render_template('list-request.html', menu=menu)
 
@@ -91,7 +96,8 @@ def create_cnc():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) # возможно нужно добавить несколько путей для сохранения
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'],
+                                   filename))  # возможно нужно добавить несколько путей для сохранения
             return redirect(url_for('create_cnc', name=filename))
     return render_template('create_cnc.html')
 
@@ -141,9 +147,18 @@ def about():
 #
 # with app.test_request_context():
 #     print(url_for('create_cnc'))
+
 @app.errorhandler(404)
 def pageNotFound(error):
     return render_template('page404.html', title="Страница не найдена", menu=menu)
+
+
+@socketio.on('message')
+def message(data):
+
+    # print(f"\n\n{data}\n\n")
+    send(data)
+    # emit('some-event', 'this is a custom event message')
 
 
 if __name__ == '__main__':
