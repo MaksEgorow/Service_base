@@ -6,9 +6,9 @@ from werkzeug.utils import secure_filename
 from flask_socketio import SocketIO, send, emit
 
 # Настройка загрузки файлов 1
-UPLOAD_FOLDER = 'C:/Users/jisca/Desktop/Max/plc'
-# UPLOAD_FOLDER1 = 'C:/Users/jisca/Desktop/Max/check_list'
-# UPLOAD_FOLDER2 = 'C:/Users/jisca/Desktop/Max/documentation'
+UPLOAD_FOLDER = 'C:/Users/jisca/Desktop/diplom/plc'
+UPLOAD_FOLDER1 = 'C:/Users/jisca/Desktop/diplom/check_list'
+UPLOAD_FOLDER2 = 'C:/Users/jisca/Desktop/diplom/documentation'
 ALLOWED_EXTENSIONS = {'txt', 'pdf'}
 
 app = Flask(__name__)
@@ -20,6 +20,8 @@ app.config['SECRET_KEY'] = '>gfhf89dx,v06kdgfh78@#5'
 
 # Настройка загрузки файлов 2
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER1'] = UPLOAD_FOLDER1
+app.config['UPLOAD_FOLDER2'] = UPLOAD_FOLDER2
 
 # Подключаемся к базе данных
 app.config['MYSQL_PORT'] = 3307
@@ -35,7 +37,7 @@ menu = [{"name": "Список оборудования", "url": "/"},
         {"name": "Заказчики", "url": "customers"},
         {"name": "ПНР", "url": "comissioning"},
         {"name": "Статистика", "url": "statistics"},
-        {"name": "Помощь", "url": "/about"}]
+        {"name": "Помощь", "url": "about"}]
 
 
 # Настройка загрузки файлов 3
@@ -85,20 +87,33 @@ def create_cnc():
         print(request.form)
         # f = request.files['file']
         # f.save(f"{secure_filename(f.filename)}")
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
+        # if 'plc' not in request.files:
+        #     flash('No file part')
+        #     return redirect(request.url)
+        file = request.files['plc']
+        file1 = request.files['check_list']
+        file2 = request.files['docs']
+        # file1 = request.files['check_list']
+        # file2 = request.files['docs']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+        # if file.filename == '':
+        #     flash('No selected file')
+        #     return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'],
-                                   filename))  # возможно нужно добавить несколько путей для сохранения
-            return redirect(url_for('create_cnc', name=filename))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('index', name=filename))
+
+        if file1 and allowed_file(file1.filename):
+            filename = secure_filename(file1.filename)
+            file1.save(os.path.join(app.config['UPLOAD_FOLDER1'], filename))
+            return redirect(url_for('index', name=filename))
+
+        if file2 and allowed_file(file2.filename):
+            filename = secure_filename(file2.filename)
+            file2.save(os.path.join(app.config['UPLOAD_FOLDER2'], filename))
+            return redirect(url_for('index', name=filename))
     return render_template('create_cnc.html')
 
 
@@ -111,24 +126,24 @@ def create_customer():
         phone = request.form['phone']
         contract = request.form['contract']
         statistic = request.form['statistics_idstatistics']
-
         # создаем курсор для взаимодействия с БД (сканировать/запрашивать/удалять)
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO customer(organization,adress,email,phone,contract, statistics_idstatistics) VALUES (%s, %s, %s, %s, %s)",
+            "INSERT INTO customer(organization,adress,email,phone,contract, statistics_idstatistics) VALUES (%s, %s, %s, %s, %s, %s)",
             (organization, adress, email, phone, contract, statistic))
         mysql.connection.commit()
         cur.close()
+
         name_cust = request.form['name_cust']
         lastname = request.form['lastname']
         surname = request.form['surname']
         phone_cust = request.form['phone_cust']
         position_cust = request.form['position_cust']
-
+        cust_idcust = request.form['customer_idcustomer']
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO customer_contact(name_cust,lastname,surname,phone_cust,position_cust) VALUES (%s, %s, %s, %s, %s)",
-            (name_cust, lastname, surname, phone_cust, position_cust))
+            "INSERT INTO customer_contact(name_cust,lastname,surname,phone_cust,position_cust, customer_idcustomer) VALUES (%s, %s, %s, %s, %s,%s)",
+            (name_cust, lastname, surname, phone_cust, position_cust, cust_idcust))
         mysql.connection.commit()
         cur.close()
         print(request.form)
@@ -155,7 +170,6 @@ def pageNotFound(error):
 
 @socketio.on('message')
 def message(data):
-
     # print(f"\n\n{data}\n\n")
     send(data)
     # emit('some-event', 'this is a custom event message')
