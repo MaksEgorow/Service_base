@@ -93,8 +93,6 @@ def create_cnc():
         file = request.files['plc']
         file1 = request.files['check_list']
         file2 = request.files['docs']
-        # file1 = request.files['check_list']
-        # file2 = request.files['docs']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
         # if file.filename == '':
@@ -114,7 +112,7 @@ def create_cnc():
             filename = secure_filename(file2.filename)
             file2.save(os.path.join(app.config['UPLOAD_FOLDER2'], filename))
             return redirect(url_for('index', name=filename))
-    return render_template('create_cnc.html')
+    return render_template('create_cnc.html', menu=menu)
 
 
 @app.route("/create_customer", methods=['POST', 'GET'])
@@ -147,7 +145,7 @@ def create_customer():
         mysql.connection.commit()
         cur.close()
         print(request.form)
-    return render_template('create_customer.html')
+    return render_template('create_customer.html', menu=menu)
 
 
 @app.route("/about")
